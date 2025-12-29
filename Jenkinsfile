@@ -6,9 +6,20 @@ pipeline {
             steps {
                 echo 'Pulling content from Git develop branch...'
                 checkout scm
-                sh 'mkdir -p /var/jenkins_home/pulled_content'
-                sh 'cp -r * /var/jenkins_home/pulled_content/'
-                echo 'Git content successfully pulled to folder!'
+                
+                // Windows batch commands
+                bat '''
+                    echo Creating directory...
+                    if not exist "C:\\Jenkins_pulled_content" mkdir "C:\\Jenkins_pulled_content"
+                    
+                    echo Copying files...
+                    xcopy /E /I /Y * "C:\\Jenkins_pulled_content\\"
+                    
+                    echo Git content successfully pulled to folder!
+                    echo.
+                    echo Files in destination:
+                    dir "C:\\Jenkins_pulled_content"
+                '''
             }
         }
     }
